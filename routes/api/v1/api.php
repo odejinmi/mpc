@@ -294,6 +294,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>['localization','react']], 
         Route::get('products/{category_id}', 'CategoryController@get_products');   // visitor logs
         Route::get('products/{category_id}/all', 'CategoryController@get_all_products');
         Route::get('restaurants/{category_id}', 'CategoryController@get_restaurants');
+        Route::post('create', 'CategoryController@create_category');
     });
 
     Route::group(['prefix' => 'cuisine'], function () {

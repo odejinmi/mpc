@@ -12,6 +12,7 @@ use App\Library\Receiver;
 use App\Models\Restaurant;
 use App\Models\Notification;
 use App\Models\OrderPayment;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use App\CentralLogics\Helpers;
 use App\Models\BusinessSetting;
@@ -32,6 +33,7 @@ use App\Models\SubscriptionTransaction;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use function Laravel\Prompts\error;
 
 class VendorController extends Controller
 {
@@ -191,6 +193,11 @@ class VendorController extends Controller
 
         if ($validator->fails()) {
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        }
+        if ($vendor->permission ==0){
+            return response()->json([
+                'errors'=>translate('Permission not granted')],
+            );
         }
 
         if ($request->has('image')) {

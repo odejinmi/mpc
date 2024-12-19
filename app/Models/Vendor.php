@@ -22,6 +22,7 @@ class Vendor extends Authenticatable
         'password',
         'auth_token',
         'remember_token',
+        'permission',
     ];
 
     public function order_transaction()

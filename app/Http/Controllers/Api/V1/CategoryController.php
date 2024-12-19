@@ -57,6 +57,41 @@ class CategoryController extends Controller
         }
     }
 
+    public function create_category(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'slug' => 'required|string|max:255|unique:categories,slug',
+                'position' => 'required|integer',
+                'priority' => 'nullable|integer',
+                'parent_id' => 'nullable|integer|exists:categories,id',
+            ]);
+
+            $status = 'Pending Approval';
+
+            $category = Category::create([
+                'name' => $validated['name'],
+                'slug' => $validated['slug'],
+                'position' => $validated['position'],
+                'status' => $status, // Set status as pending approval
+                'priority' => $validated['priority'] ?? 0,
+                'parent_id' => $validated['parent_id'] ?? null,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Category created successfully. Pending approval from Super Admin.',
+                'category' => $category
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create category.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
     public function get_childes($id)
     {
         try {
