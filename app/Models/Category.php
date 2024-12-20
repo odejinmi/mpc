@@ -11,6 +11,8 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name'];
+
     protected $casts = [
         'name' => 'string',
         'slug' => 'string',
