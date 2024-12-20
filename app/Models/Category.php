@@ -12,6 +12,9 @@ class Category extends Model
     use HasFactory;
 
     protected $casts = [
+        'name' => 'string',
+        'slug' => 'string',
+        'image' => 'string',
         'parent_id' => 'integer',
         'position' => 'integer',
         'priority' => 'integer',
