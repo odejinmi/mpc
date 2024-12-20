@@ -61,13 +61,19 @@ class CategoryController extends Controller
     {
         try {
             $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'slug' => 'required|string|max:255|unique:categories,slug',
+                'name' => 'required',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'slug' => 'required|unique:categories,slug',
                 'position' => 'required|integer',
                 'priority' => 'nullable|integer',
                 'parent_id' => 'nullable|integer|exists:categories,id',
             ]);
-
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imagePath = $image->store('categories', 'public');
+            } else {
+                throw new \Exception('Image upload failed');
+            }
             $status = 'Pending Approval';
 
             $category = Category::create([
@@ -77,6 +83,7 @@ class CategoryController extends Controller
                 'status' => $status, // Set status as pending approval
                 'priority' => $validated['priority'] ?? 0,
                 'parent_id' => $validated['parent_id'] ?? null,
+                'image' => $imagePath,
             ]);
 
             return response()->json([
