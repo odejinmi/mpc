@@ -60,25 +60,15 @@ class CategoryController extends Controller
     public function create_category(Request $request)
     {
         try {
-            if($request->type == "Category") {
-                $validated = $request->validate([
-                    'name' => 'required',
-                    'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                    'slug' => 'required|unique:categories,slug',
-                    'position' => 'required|integer',
-                    'priority' => 'nullable|integer',
-                    'parent_id' => 'nullable|integer',
-                ]);
-            }else{
-                $validated = $request->validate([
-                    'name' => 'required',
-                    'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                    'slug' => 'required|unique:categories,slug',
-                    'position' => 'required|integer',
-                    'priority' => 'nullable|integer',
-                    'parent_id' => 'nullable|integer|exists:categories,id',
-                ]);
-            }
+            $validated = $request->validate([
+                'name' => 'required',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'slug' => 'required|unique:categories,slug',
+                'position' => 'required|integer',
+                'priority' => 'nullable|integer',
+                'parent_id' => 'nullable|integer',
+            ]);
+
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imagePath = $image->store('categories', 'public');
