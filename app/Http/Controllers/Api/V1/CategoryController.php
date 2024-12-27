@@ -67,6 +67,7 @@ class CategoryController extends Controller
                     'slug' => 'required|unique:categories,slug',
                     'position' => 'required|integer',
                     'priority' => 'nullable|integer',
+                    'parent_id' => 'nullable|integer',
                 ]);
             }else{
                 $validated = $request->validate([
